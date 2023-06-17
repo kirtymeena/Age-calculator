@@ -2,13 +2,6 @@ import "./styles/variables.css"
 import "./styles/main.css"
 import Validation from "./js/funtioncalCode/Validation"
 import { calculateDays, calculateMonth, calculateYears } from "./js/funtioncalCode/CalculateAge"
-// import Main from "./js/main"
-// import Validate from "./js/Validate";
-
-// const main = new Main();
-// console.log(main)
-// const validate = new Validate(40, 5, 1997);
-// console.log(validate.validateDay())
 
 const dayEle = document.getElementById("day")
 const monthEle = document.getElementById("month")
