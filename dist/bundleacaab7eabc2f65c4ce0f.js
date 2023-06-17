@@ -2,38 +2,152 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/js/main.js":
-/*!************************!*\
-  !*** ./src/js/main.js ***!
-  \************************/
+/***/ "./src/js/funtioncalCode/CalculateAge.js":
+/*!***********************************************!*\
+  !*** ./src/js/funtioncalCode/CalculateAge.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   calculateDays: () => (/* binding */ calculateDays),
+/* harmony export */   calculateMonth: () => (/* binding */ calculateMonth),
+/* harmony export */   calculateYears: () => (/* binding */ calculateYears)
+/* harmony export */ });
+var calculateYears = function calculateYears(year) {
+  var currentYear = new Date().getFullYear();
+  return Math.abs(currentYear - year) - 1;
+};
+var calculateMonth = function calculateMonth(month) {
+  var m1 = 12 - month;
+  var m2 = new Date().getMonth();
+  return m1 + m2;
+};
+var calculateDays = function calculateDays(day, month) {
+  var currentDate = new Date();
+  var d1 = month + "/" + day + "/" + (currentDate.getFullYear() - 1);
+  var d2 = currentDate.getMonth() + "/" + currentDate.getDate() + "/" + currentDate.getFullYear();
+  return Math.abs(Math.floor((Date.parse(d1) - Date.parse(d2)) / (1000 * 60 * 60 * 24)));
+};
+
+/***/ }),
+
+/***/ "./src/js/funtioncalCode/Validation.js":
+/*!*********************************************!*\
+  !*** ./src/js/funtioncalCode/Validation.js ***!
+  \*********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-var Main = /*#__PURE__*/function () {
-  function Main(day, month, year) {
-    _classCallCheck(this, Main);
-    day = document.getElementById('day');
-    month = document.getElementById('month');
-    year = document.getElementById('year');
-  }
-  _createClass(Main, [{
-    key: "printEvent",
-    value: function printEvent() {
-      console.log(this.day, this.month);
+function Validation(_ref) {
+  var dayEle = _ref.dayEle,
+    monthEle = _ref.monthEle,
+    yearEle = _ref.yearEle,
+    dayError = _ref.dayError,
+    title = _ref.title;
+  var monthWith30 = [4, 6, 9, 11];
+  var _ref2 = [dayEle.value, monthEle.value, yearEle.value],
+    day = _ref2[0],
+    month = _ref2[1],
+    year = _ref2[2];
+  console.log(day, month);
+  var errorCount = 0;
+  var isLeapYear = function isLeapYear(year) {
+    return year % 4 === 0 && year % 400 === 0;
+  };
+  var checkEmptyField = function checkEmptyField() {
+    if (day.length === 0) {
+      errorCount += 1;
+      dayEle.style.border = '1px solid #ff5959';
+      dayError.innerText = "The field is required";
+      title[0].style.color = '#ff5959';
+    } else if (errorCount === 0) {
+      console.log("empty field");
+      dayEle.style.border = '';
+      dayError.innerText = "";
+      title[0].style.color = '';
     }
-  }]);
-  return Main;
-}();
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Main);
+    if (month === "") {
+      errorCount += 1;
+      monthEle.style.border = '1px solid red';
+      title[1].style.color = '#ff5959';
+      monthError.innerText = "The field is required";
+    } else if (errorCount === 0) {
+      monthEle.style.border = '';
+      monthError.innerText = "";
+      title[1].style.color = '';
+    }
+    if (year === "") {
+      errorCount += 1;
+      yearEle.style.border = '1px solid red';
+      title[2].style.color = '#ff5959';
+      yearError.innerText = "The field is required";
+    } else if (errorCount === 0) {
+      yearEle.style.border = '';
+      yearError.innerText = "";
+      title[2].style.color = '';
+    }
+    return errorCount > 0;
+  };
+  var validateDay = function validateDay() {
+    if (isNaN(day) || day === '00' || Number(day) > 30 && !monthWith30.includes(month) || isLeapYear(year) && Number(day) > 29 || Number(day) > 31) {
+      console.log("Must be a valid day");
+      dayEle.style.border = '1px solid #ff5959';
+      dayError.innerText = "Must be a valid day";
+      title[0].style.color = '#ff5959';
+      errorCount += 1;
+    } else if (!checkEmptyField() && errorCount === 0) {
+      console.log('here');
+      dayEle.style.border = '';
+      dayError.innerText = "";
+      title[0].style.color = '';
+    }
+  };
+  var validateMonth = function validateMonth() {
+    if (Number(month) > 12 || isNaN(month) || month === '000') {
+      console.log("must be a vlaid month");
+      monthEle.style.border = '1px solid #ff5959';
+      monthError.innerText = "Must be a valid month";
+      title[1].style.color = '#ff5959';
+      errorCount += 1;
+    } else if (!checkEmptyField()) {
+      monthEle.style.border = '';
+      monthError.innerText = "";
+      title[1].style.color = '';
+    }
+  };
+  var validateYear = function validateYear() {
+    var currentYear = new Date().getFullYear();
+    if (Number(year) >= currentYear || year === '0000' || isNaN(year)) {
+      console.log("Must be a valid Year");
+      yearEle.style.border = '1px solid #ff5959';
+      yearError.innerText = "Must be in the past";
+      title[2].style.color = '#ff5959';
+      errorCount += 1;
+    } else if (!checkEmptyField()) {
+      yearEle.style.border = '';
+      yearError.innerText = "";
+      title[2].style.color = '';
+    }
+  };
+  return function () {
+    checkEmptyField();
+    validateDay();
+    validateMonth();
+    validateYear();
+    if (errorCount === 0) {
+      return "success";
+    }
+    // else {
+    //     return "Error"
+    // }
+  };
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Validation);
 
 /***/ }),
 
@@ -123,6 +237,12 @@ body {
   color: var(--black);
   font-weight: var(--fw);
   cursor: pointer;
+  appearance: none;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  margin: 0;
 }
 #day:focus,
 #month:focus,
@@ -148,10 +268,10 @@ body {
   padding: 0.5rem;
   transition: 0.3s background;
 }
-.seperator__circle:hover{
+.seperator__circle:hover {
   background-color: #c4a9ff;
 }
-.seperator__circle:active{
+.seperator__circle:active {
   background-color: var(--purple);
 }
 svg {
@@ -179,6 +299,31 @@ svg {
   width: 100%;
   top: 50%;
   transform: translateY(-50%);
+}
+
+#dayError,
+#monthError,
+#yearError {
+  color: var(--red);
+  font-size: var(--fs-14);
+  font-style: italic;
+  line-height: 21px;
+}
+
+.result-1,
+.result-2,
+.result-3 {
+  display: flex;
+  align-items: center;
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 114.4px;
+}
+.dash-1,
+.dash-2,
+.dash-3 {
+  color: var(--purple);
+  padding-right: 1rem;
 }
 
 /* ================= media queries ===================== */
@@ -210,8 +355,13 @@ svg {
 }
 
 @media only screen and (min-width: 992px) {
+  .result-1,
+  .result-2,
+  .result-3 {
+    font-size: 104px;
+  }
 }
-`, "",{"version":3,"sources":["webpack://./src/styles/main.css"],"names":[],"mappings":"AAAA;EACE,UAAU;EACV,SAAS;EACT,sBAAsB;AACxB;;AAEA;EACE,aAAa;EACb,WAAW;EACX,mCAAmC;EACnC,aAAa;EACb,uBAAuB;EACvB,mBAAmB;EACnB,aAAa;EACb,sBAAsB;AACxB;;AAEA;EACE,8BAA8B;EAC9B,YAAY;EACZ,aAAa;EACb,mCAAmC;EACnC,4BAA4B;EAC5B,aAAa;EACb,sBAAsB;EACtB,SAAS;AACX;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,SAAS;EACT,uBAAuB;AACzB;;AAEA;EACE,cAAc;AAChB;;AAEA;EACE,uBAAuB;EACvB,kCAAkC;EAClC,qCAAqC;EACrC,kBAAkB;EAClB,sBAAsB;EACtB,yBAAyB;AAC3B;;AAEA;EACE,YAAY;EACZ,WAAW;AACb;;AAEA,gBAAgB;AAChB;;;EAGE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,kBAAkB;EAClB,yBAAyB;EACzB,uBAAuB;EACvB,uBAAuB;EACvB,mBAAmB;EACnB,sBAAsB;EACtB,eAAe;AACjB;AACA;;;EAGE,aAAa;EACb,yBAAyB;AAC3B;;AAEA;EACE,aAAa;EACb,uBAAuB;EACvB,WAAW;AACb;;AAEA;EACE,+BAA+B;EAC/B,kBAAkB;EAClB,eAAe;EACf,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,eAAe;EACf,eAAe;EACf,2BAA2B;AAC7B;AACA;EACE,yBAAyB;AAC3B;AACA;EACE,+BAA+B;AACjC;AACA;EACE,gBAAgB;AAClB;AACA;;EAEE,UAAU;EACV,kBAAkB;AACpB;AACA;EACE,kBAAkB;EAClB,qBAAqB;EACrB,WAAW;EACX,mCAAmC;EACnC,WAAW;EACX,QAAQ;EACR,2BAA2B;AAC7B;AACA;EACE,kBAAkB;EAClB,qBAAqB;EACrB,WAAW;EACX,mCAAmC;EACnC,WAAW;EACX,QAAQ;EACR,2BAA2B;AAC7B;;AAEA,0DAA0D;;AAE1D;EACE;IACE,cAAc;EAChB;EACA;IACE,mCAAmC;EACrC;;EAEA;IACE,2BAA2B;EAC7B;EACA;IACE,YAAY;EACd;EACA;IACE,YAAY;IACZ,WAAW;EACb;;EAEA;IACE,uBAAuB;IACvB,kCAAkC;IAClC,qCAAqC;EACvC;AACF;;AAEA;AACA","sourcesContent":["* {\r\n  padding: 0;\r\n  margin: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\nbody {\r\n  height: 100vh;\r\n  width: 100%;\r\n  background-color: var(--light-grey);\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 20px;\r\n  font-family: var(--ff);\r\n}\r\n\r\n.card__wrapper {\r\n  background-color: var(--white);\r\n  width: 840px;\r\n  height: 651px;\r\n  border-radius: 38px 16px 238px 16px;\r\n  padding: 48px 24px 48px 24px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 32px;\r\n}\r\n\r\n.card__header {\r\n  display: flex;\r\n  flex-direction: row;\r\n  gap: 1rem;\r\n  justify-content: center;\r\n}\r\n\r\n.card__header > div {\r\n  width: 87.67px;\r\n}\r\n\r\n.title {\r\n  font-size: var(--fs-sm);\r\n  line-height: var(--line-height-sm);\r\n  letter-spacing: var(--letter-spacing);\r\n  color: var(--grey);\r\n  font-weight: var(--fw);\r\n  text-transform: uppercase;\r\n}\r\n\r\n.inner__header > div:nth-child(even) {\r\n  height: 54px;\r\n  width: 100%;\r\n}\r\n\r\n/* input field */\r\n#day,\r\n#month,\r\n#year {\r\n  width: 100%;\r\n  height: 100%;\r\n  text-align: center;\r\n  border-radius: 8px;\r\n  border: 1px solid #dcdcdc;\r\n  transition: 0.4s border;\r\n  font-size: var(--fs-lg);\r\n  color: var(--black);\r\n  font-weight: var(--fw);\r\n  cursor: pointer;\r\n}\r\n#day:focus,\r\n#month:focus,\r\n#year:focus {\r\n  outline: none;\r\n  border: 1px solid #854dff;\r\n}\r\n\r\n.card__seperator {\r\n  display: flex;\r\n  justify-content: center;\r\n  width: 100%;\r\n}\r\n\r\n.seperator__circle {\r\n  background-color: var(--purple);\r\n  border-radius: 50%;\r\n  aspect-ratio: 1;\r\n  width: 64px;\r\n  height: 64px;\r\n  z-index: 100;\r\n  cursor: pointer;\r\n  padding: 0.5rem;\r\n  transition: 0.3s background;\r\n}\r\n.seperator__circle:hover{\r\n  background-color: #c4a9ff;\r\n}\r\n.seperator__circle:active{\r\n  background-color: var(--purple);\r\n}\r\nsvg {\r\n  fill: whitesmoke;\r\n}\r\n.right__seperator,\r\n.left__seperator {\r\n  width: 50%;\r\n  position: relative;\r\n}\r\n.right__seperator::after {\r\n  position: absolute;\r\n  display: inline-block;\r\n  content: \"\";\r\n  border: 1px solid var(--light-grey);\r\n  width: 100%;\r\n  top: 50%;\r\n  transform: translateY(-50%);\r\n}\r\n.left__seperator::before {\r\n  position: absolute;\r\n  display: inline-block;\r\n  content: \"\";\r\n  border: 1px solid var(--light-grey);\r\n  width: 100%;\r\n  top: 50%;\r\n  transform: translateY(-50%);\r\n}\r\n\r\n/* ================= media queries ===================== */\r\n\r\n@media only screen and (min-width: 608px) {\r\n  body {\r\n    padding: 100px;\r\n  }\r\n  .card__wrapper {\r\n    border-radius: 24px 24px 200px 24px;\r\n  }\r\n\r\n  .card__header {\r\n    justify-content: flex-start;\r\n  }\r\n  .card__header > div {\r\n    width: 160px;\r\n  }\r\n  .inner__header > div:nth-child(even) {\r\n    height: 72px;\r\n    width: 100%;\r\n  }\r\n\r\n  .title {\r\n    font-size: var(--fs-md);\r\n    line-height: var(--line-height-lg);\r\n    letter-spacing: var(--letter-spacing);\r\n  }\r\n}\r\n\r\n@media only screen and (min-width: 992px) {\r\n}\r\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/styles/main.css"],"names":[],"mappings":"AAAA;EACE,UAAU;EACV,SAAS;EACT,sBAAsB;AACxB;;AAEA;EACE,aAAa;EACb,WAAW;EACX,mCAAmC;EACnC,aAAa;EACb,uBAAuB;EACvB,mBAAmB;EACnB,aAAa;EACb,sBAAsB;AACxB;;AAEA;EACE,8BAA8B;EAC9B,YAAY;EACZ,aAAa;EACb,mCAAmC;EACnC,4BAA4B;EAC5B,aAAa;EACb,sBAAsB;EACtB,SAAS;AACX;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,SAAS;EACT,uBAAuB;AACzB;;AAEA;EACE,cAAc;AAChB;;AAEA;EACE,uBAAuB;EACvB,kCAAkC;EAClC,qCAAqC;EACrC,kBAAkB;EAClB,sBAAsB;EACtB,yBAAyB;AAC3B;;AAEA;EACE,YAAY;EACZ,WAAW;AACb;;AAEA,gBAAgB;AAChB;;;EAGE,WAAW;EACX,YAAY;EACZ,kBAAkB;EAClB,kBAAkB;EAClB,yBAAyB;EACzB,uBAAuB;EACvB,uBAAuB;EACvB,mBAAmB;EACnB,sBAAsB;EACtB,eAAe;EACf,gBAAgB;AAClB;AACA;EACE,0BAA0B;EAC1B,wBAAwB;EACxB,SAAS;AACX;AACA;;;EAGE,aAAa;EACb,yBAAyB;AAC3B;;AAEA;EACE,aAAa;EACb,uBAAuB;EACvB,WAAW;AACb;;AAEA;EACE,+BAA+B;EAC/B,kBAAkB;EAClB,eAAe;EACf,WAAW;EACX,YAAY;EACZ,YAAY;EACZ,eAAe;EACf,eAAe;EACf,2BAA2B;AAC7B;AACA;EACE,yBAAyB;AAC3B;AACA;EACE,+BAA+B;AACjC;AACA;EACE,gBAAgB;AAClB;AACA;;EAEE,UAAU;EACV,kBAAkB;AACpB;AACA;EACE,kBAAkB;EAClB,qBAAqB;EACrB,WAAW;EACX,mCAAmC;EACnC,WAAW;EACX,QAAQ;EACR,2BAA2B;AAC7B;AACA;EACE,kBAAkB;EAClB,qBAAqB;EACrB,WAAW;EACX,mCAAmC;EACnC,WAAW;EACX,QAAQ;EACR,2BAA2B;AAC7B;;AAEA;;;EAGE,iBAAiB;EACjB,uBAAuB;EACvB,kBAAkB;EAClB,iBAAiB;AACnB;;AAEA;;;EAGE,aAAa;EACb,mBAAmB;EACnB,gBAAgB;EAChB,eAAe;EACf,oBAAoB;AACtB;AACA;;;EAGE,oBAAoB;EACpB,mBAAmB;AACrB;;AAEA,0DAA0D;;AAE1D;EACE;IACE,cAAc;EAChB;EACA;IACE,mCAAmC;EACrC;;EAEA;IACE,2BAA2B;EAC7B;EACA;IACE,YAAY;EACd;EACA;IACE,YAAY;IACZ,WAAW;EACb;;EAEA;IACE,uBAAuB;IACvB,kCAAkC;IAClC,qCAAqC;EACvC;AACF;;AAEA;EACE;;;IAGE,gBAAgB;EAClB;AACF","sourcesContent":["* {\r\n  padding: 0;\r\n  margin: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\nbody {\r\n  height: 100vh;\r\n  width: 100%;\r\n  background-color: var(--light-grey);\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n  padding: 20px;\r\n  font-family: var(--ff);\r\n}\r\n\r\n.card__wrapper {\r\n  background-color: var(--white);\r\n  width: 840px;\r\n  height: 651px;\r\n  border-radius: 38px 16px 238px 16px;\r\n  padding: 48px 24px 48px 24px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 32px;\r\n}\r\n\r\n.card__header {\r\n  display: flex;\r\n  flex-direction: row;\r\n  gap: 1rem;\r\n  justify-content: center;\r\n}\r\n\r\n.card__header > div {\r\n  width: 87.67px;\r\n}\r\n\r\n.title {\r\n  font-size: var(--fs-sm);\r\n  line-height: var(--line-height-sm);\r\n  letter-spacing: var(--letter-spacing);\r\n  color: var(--grey);\r\n  font-weight: var(--fw);\r\n  text-transform: uppercase;\r\n}\r\n\r\n.inner__header > div:nth-child(even) {\r\n  height: 54px;\r\n  width: 100%;\r\n}\r\n\r\n/* input field */\r\n#day,\r\n#month,\r\n#year {\r\n  width: 100%;\r\n  height: 100%;\r\n  text-align: center;\r\n  border-radius: 8px;\r\n  border: 1px solid #dcdcdc;\r\n  transition: 0.4s border;\r\n  font-size: var(--fs-lg);\r\n  color: var(--black);\r\n  font-weight: var(--fw);\r\n  cursor: pointer;\r\n  appearance: none;\r\n}\r\ninput[type=\"number\"] {\r\n  -moz-appearance: textfield;\r\n  -webkit-appearance: none;\r\n  margin: 0;\r\n}\r\n#day:focus,\r\n#month:focus,\r\n#year:focus {\r\n  outline: none;\r\n  border: 1px solid #854dff;\r\n}\r\n\r\n.card__seperator {\r\n  display: flex;\r\n  justify-content: center;\r\n  width: 100%;\r\n}\r\n\r\n.seperator__circle {\r\n  background-color: var(--purple);\r\n  border-radius: 50%;\r\n  aspect-ratio: 1;\r\n  width: 64px;\r\n  height: 64px;\r\n  z-index: 100;\r\n  cursor: pointer;\r\n  padding: 0.5rem;\r\n  transition: 0.3s background;\r\n}\r\n.seperator__circle:hover {\r\n  background-color: #c4a9ff;\r\n}\r\n.seperator__circle:active {\r\n  background-color: var(--purple);\r\n}\r\nsvg {\r\n  fill: whitesmoke;\r\n}\r\n.right__seperator,\r\n.left__seperator {\r\n  width: 50%;\r\n  position: relative;\r\n}\r\n.right__seperator::after {\r\n  position: absolute;\r\n  display: inline-block;\r\n  content: \"\";\r\n  border: 1px solid var(--light-grey);\r\n  width: 100%;\r\n  top: 50%;\r\n  transform: translateY(-50%);\r\n}\r\n.left__seperator::before {\r\n  position: absolute;\r\n  display: inline-block;\r\n  content: \"\";\r\n  border: 1px solid var(--light-grey);\r\n  width: 100%;\r\n  top: 50%;\r\n  transform: translateY(-50%);\r\n}\r\n\r\n#dayError,\r\n#monthError,\r\n#yearError {\r\n  color: var(--red);\r\n  font-size: var(--fs-14);\r\n  font-style: italic;\r\n  line-height: 21px;\r\n}\r\n\r\n.result-1,\r\n.result-2,\r\n.result-3 {\r\n  display: flex;\r\n  align-items: center;\r\n  font-weight: 800;\r\n  font-size: 56px;\r\n  line-height: 114.4px;\r\n}\r\n.dash-1,\r\n.dash-2,\r\n.dash-3 {\r\n  color: var(--purple);\r\n  padding-right: 1rem;\r\n}\r\n\r\n/* ================= media queries ===================== */\r\n\r\n@media only screen and (min-width: 608px) {\r\n  body {\r\n    padding: 100px;\r\n  }\r\n  .card__wrapper {\r\n    border-radius: 24px 24px 200px 24px;\r\n  }\r\n\r\n  .card__header {\r\n    justify-content: flex-start;\r\n  }\r\n  .card__header > div {\r\n    width: 160px;\r\n  }\r\n  .inner__header > div:nth-child(even) {\r\n    height: 72px;\r\n    width: 100%;\r\n  }\r\n\r\n  .title {\r\n    font-size: var(--fs-md);\r\n    line-height: var(--line-height-lg);\r\n    letter-spacing: var(--letter-spacing);\r\n  }\r\n}\r\n\r\n@media only screen and (min-width: 992px) {\r\n  .result-1,\r\n  .result-2,\r\n  .result-3 {\r\n    font-size: 104px;\r\n  }\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -244,8 +394,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, `:root {
   --black: #151515;
   --purple: #854dff;
   --ff: "Poppins", sans-serif;
+  --red: #ff5959;
 
   --fs-sm: 12px;
+  --fs-14: 14px;
   --fs-lg: 20px;
   --fs-md: 14px;
 
@@ -254,7 +406,7 @@ ___CSS_LOADER_EXPORT___.push([module.id, `:root {
   --letter-spacing: 0.25em;
   --fw: 700;
 }
-`, "",{"version":3,"sources":["webpack://./src/styles/variables.css"],"names":[],"mappings":"AAAA;EACE,qBAAqB;EACrB,eAAe;EACf,gBAAgB;EAChB,gBAAgB;EAChB,iBAAiB;EACjB,2BAA2B;;EAE3B,aAAa;EACb,aAAa;EACb,aAAa;;EAEb,sBAAsB;EACtB,sBAAsB;EACtB,wBAAwB;EACxB,SAAS;AACX","sourcesContent":[":root {\r\n  --light-grey: #f0f0f0;\r\n  --grey: #716f6f;\r\n  --white: #ffffff;\r\n  --black: #151515;\r\n  --purple: #854dff;\r\n  --ff: \"Poppins\", sans-serif;\r\n\r\n  --fs-sm: 12px;\r\n  --fs-lg: 20px;\r\n  --fs-md: 14px;\r\n\r\n  --line-height-sm: 18px;\r\n  --line-height-lg: 21px;\r\n  --letter-spacing: 0.25em;\r\n  --fw: 700;\r\n}\r\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/styles/variables.css"],"names":[],"mappings":"AAAA;EACE,qBAAqB;EACrB,eAAe;EACf,gBAAgB;EAChB,gBAAgB;EAChB,iBAAiB;EACjB,2BAA2B;EAC3B,cAAc;;EAEd,aAAa;EACb,aAAa;EACb,aAAa;EACb,aAAa;;EAEb,sBAAsB;EACtB,sBAAsB;EACtB,wBAAwB;EACxB,SAAS;AACX","sourcesContent":[":root {\r\n  --light-grey: #f0f0f0;\r\n  --grey: #716f6f;\r\n  --white: #ffffff;\r\n  --black: #151515;\r\n  --purple: #854dff;\r\n  --ff: \"Poppins\", sans-serif;\r\n  --red: #ff5959;\r\n\r\n  --fs-sm: 12px;\r\n  --fs-14: 14px;\r\n  --fs-lg: 20px;\r\n  --fs-md: 14px;\r\n\r\n  --line-height-sm: 18px;\r\n  --line-height-lg: 21px;\r\n  --letter-spacing: 0.25em;\r\n  --fw: 700;\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -837,12 +989,45 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_variables_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles/variables.css */ "./src/styles/variables.css");
 /* harmony import */ var _styles_main_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./styles/main.css */ "./src/styles/main.css");
-/* harmony import */ var _js_main__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./js/main */ "./src/js/main.js");
+/* harmony import */ var _js_funtioncalCode_Validation__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./js/funtioncalCode/Validation */ "./src/js/funtioncalCode/Validation.js");
+/* harmony import */ var _js_funtioncalCode_CalculateAge__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/funtioncalCode/CalculateAge */ "./src/js/funtioncalCode/CalculateAge.js");
 
 
 
+
+var dayEle = document.getElementById("day");
+var monthEle = document.getElementById("month");
+var yearEle = document.getElementById("year");
+var btn = document.getElementById("btn");
+var dayError = document.getElementById('dayError');
+var title = document.querySelectorAll('.title');
+var resulyYear = document.querySelector('.dash-1');
+var resultMonth = document.querySelector('.dash-2');
+var resultDay = document.querySelector('.dash-3');
+btn.addEventListener('click', function (e) {
+  toggleAria();
+  if ((0,_js_funtioncalCode_Validation__WEBPACK_IMPORTED_MODULE_2__["default"])({
+    dayEle: dayEle,
+    monthEle: monthEle,
+    yearEle: yearEle,
+    dayError: dayError,
+    title: title
+  })() === "success") {
+    resulyYear.innerHTML = (0,_js_funtioncalCode_CalculateAge__WEBPACK_IMPORTED_MODULE_3__.calculateYears)(yearEle.value);
+    resultMonth.innerHTML = (0,_js_funtioncalCode_CalculateAge__WEBPACK_IMPORTED_MODULE_3__.calculateMonth)(monthEle.value);
+    resultDay.innerHTML = (0,_js_funtioncalCode_CalculateAge__WEBPACK_IMPORTED_MODULE_3__.calculateDays)(dayEle.value, monthEle.value);
+  }
+});
+var toggleAria = function toggleAria() {
+  btn.setAttribute('aria-pressed', true);
+};
+var keyboardAccessBtn = function keyboardAccessBtn(e) {
+  if (e.keyCode === 13 || e.keyCode === 32) {
+    toggleAria();
+  }
+};
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundleca7058fba3063addf36b.js.map
+//# sourceMappingURL=bundleacaab7eabc2f65c4ce0f.js.map
