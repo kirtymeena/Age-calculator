@@ -97,7 +97,7 @@ input[type="number"] {
   transition: 0.3s background;
 }
 .seperator__circle:hover {
-  background-color: #c4a9ff;
+  background-color: #151515;
 }
 .seperator__circle:active {
   background-color: var(--purple);
