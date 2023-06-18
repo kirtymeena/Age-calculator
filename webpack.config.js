@@ -1,9 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const ESLintPlugin = require('eslint-webpack-plugin');
+
 module.exports = {
     mode: "development",
-    target:'web',
+    target: 'web',
     entry: {
         bundle: path.resolve(__dirname, './src/index.js'),
     },
@@ -54,6 +56,12 @@ module.exports = {
             filename: "index.html",
             template: 'src/index.html'
         }),
-        // new BundleAnalyzerPlugin(),
+        new ESLintPlugin({
+            files: 'src/**/*.ts',
+            "overrideConfig": {
+                "extends": "eslint:recommended",
+                "rules": {}
+            }
+        })
     ]
 }
